@@ -96,14 +96,15 @@ class AddItemsBySku implements ResolverInterface
 
         try {
             $this->quoteRepository->addItemsBySku($currentUserId, $cart->getId(), $skus, $qty);
+            $quote = $this->quoteRepository->getInactiveQuoteCart($currentUserId);
         } catch (Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));
         }
 
         return [
-            'quote' => [
-                'model' => $this->quoteRepository->getInactiveQuoteCart($currentUserId)
-            ],
+            'quote' => array_merge($quote->getData(), [
+                'model' => $quote
+            ])
         ];
     }
 }

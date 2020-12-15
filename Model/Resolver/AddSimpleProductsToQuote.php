@@ -91,11 +91,12 @@ class AddSimpleProductsToQuote implements ResolverInterface
         $customer   = $this->getCustomer->execute($context);
         $customerId = $customer->getId();
         $this->addProductsToQuote->execute($customerId, $cartItems);
+        $quote = $this->quoteRepository->getInactiveQuoteCart($customerId);
 
         return [
-            'quote' => [
-                'model' => $this->quoteRepository->getInactiveQuoteCart($customerId),
-            ],
+            'quote' => array_merge($quote->getData(), [
+                'model' => $quote
+            ])
         ];
     }
 }

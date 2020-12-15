@@ -136,7 +136,7 @@ type AddBundleProductsToQuoteOutput {
 }
 
 type AddAllItemsFromCartToMpQuoteOutput {
-    cart: Cart!
+    quote: Quote!
 }
 
 type AddItemsBySkuToMpQuoteOuput {
@@ -168,7 +168,6 @@ type GetMpQuoteOutput {
 }
 
 type Quote {
-    id: Int
     entity_id: Int
     store_id: Int
     created_at: String

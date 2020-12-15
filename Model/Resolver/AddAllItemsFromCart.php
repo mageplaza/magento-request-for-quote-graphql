@@ -93,14 +93,15 @@ class AddAllItemsFromCart implements ResolverInterface
 
         try {
             $this->quoteRepository->addAllItemsFromCart($currentUserId, $cart->getId());
+            $quote = $this->quoteRepository->getInactiveQuoteCart($currentUserId);
         } catch (Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));
         }
 
         return [
-            'cart' => [
-                'model' => $cart,
-            ],
+            'quote' => array_merge($quote->getData(), [
+                'model' => $quote
+            ])
         ];
     }
 }

@@ -24,13 +24,13 @@ declare(strict_types=1);
 namespace Mageplaza\RequestForQuoteGraphQl\Model\Resolver;
 
 use Exception;
+use Magento\Framework\Exception\AuthorizationException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\GraphQl\Model\Query\ContextInterface;
 use Mageplaza\RequestForQuote\Model\Api\QuoteRepository;
-use Magento\Framework\Exception\AuthorizationException;
 
 /**
  * Class Get
@@ -69,10 +69,12 @@ class Get implements ResolverInterface
 
         $quoteId = $args['quote_id'];
         try {
+            $quote = $this->quoteRepository->get($currentUserId, $quoteId);
+
             return [
-                'quote' => [
-                    'model' => $this->quoteRepository->get($currentUserId, $quoteId)
-                ],
+                'quote' => array_merge($quote->getData(), [
+                    'model' => $quote
+                ]),
             ];
         } catch (Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));
