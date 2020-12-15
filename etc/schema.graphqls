@@ -1,0 +1,250 @@
+# Mageplaza
+#
+# NOTICE OF LICENSE
+#
+# This source file is subject to the Mageplaza.com license that is
+# available through the world-wide-web at this URL:
+# https://www.mageplaza.com/LICENSE.txt
+#
+# DISCLAIMER
+#
+# Do not edit or add to this file if you wish to upgrade this extension to newer
+# version in the future.
+#
+# @category    Mageplaza
+# @package     Mageplaza_RequestForQuoteGraphQl
+# @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+# @license     https://www.mageplaza.com/LICENSE.txt
+
+type Query {
+    mpQuote(quote_id: Int): GetMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\Get")
+    mpQuoteList(
+        filter: MpQuoteFilterInput
+        pageSize: Int = 20
+        currentPage: Int = 1
+    ): MpQuoteListOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\GetList")
+    mpQuoteConversation(
+        quote_id: Int!
+        filter: MpQuoteConversationFilterInput
+        sort: MpQuoteConversationSortInput
+        pageSize: Int = 20
+        currentPage: Int = 1
+    ): mpQuoteConversationOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\GetConversation")
+}
+
+type Mutation {
+    addSimpleProductsToMpQuote(input: AddSimpleProductsToQuoteInput): AddSimpleProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
+    addVirtualProductsToMpQuote(input: AddVirtualProductsToQuoteInput): AddVirtualProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
+    addConfigurableProductsToMpQuote(input: AddConfigurableProductsToQuoteInput): AddConfigurableProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
+    addDownloadableProductsToMpQuote(input: AddDownloadableProductsToQuoteInput): AddDownloadableProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
+    addBundleProductsToMpQuote(input: AddBundleProductsToQuoteInput): AddBundleProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
+    addAllItemsFromCartToMpQuote: AddAllItemsFromCartToMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddAllItemsFromCart")
+    addItemsBySkuToMpQuote(input: AddItemsBySkuToMpQuoteInput): AddItemsBySkuToMpQuoteOuput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddItemsBySku")
+    addItemFromCartToMpQuote(cart_item_id: String!): AddItemFromCartToMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddItemFromCart")
+    cancelMpQuote(quote_id: Int!): Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\Cancel")
+    deleteSubmittedMpQuote(quote_id: Int!): Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\DeleteSubmittedQuote")
+    deleteItemFromMpQuote(item_id: Int!): DeleteItemFromMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\DeleteItem")
+    duplicateMpQuote(quote_id: Int!): DuplicateMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\Duplicate")
+    updateMpQuote(input: updateMpQuoteInput!): UpdateMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\Update")
+    deleteCurrentMpQuote: Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\DeleteCurrentQuote")
+    addMpQuoteToCart(quote_id: Int!): AddMpQuoteToCartOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddToCart")
+}
+
+input AddSimpleProductsToQuoteInput {
+    cart_items: [SimpleProductCartItemInput!]!
+}
+input AddVirtualProductsToQuoteInput {
+    cart_items: [VirtualProductCartItemInput!]!
+}
+input AddConfigurableProductsToQuoteInput {
+    cart_items: [ConfigurableProductCartItemInput!]!
+}
+
+input AddDownloadableProductsToQuoteInput {
+    cart_items: [DownloadableProductCartItemInput!]!
+}
+
+input AddBundleProductsToQuoteInput {
+    cart_items: [BundleProductCartItemInput!]!
+}
+
+input AddItemsBySkuToMpQuoteInput {
+    skus: [String!]!
+    qty: Int
+}
+
+input updateMpQuoteInput {
+    quote_id: Int
+    items: [UpdateMpQuoteItemInput!]!
+}
+
+input UpdateMpQuoteItemInput {
+    item_id: Int!
+    price: Float
+    qty: Int
+}
+
+input MpQuoteFilterInput {
+    entity_id: FilterTypeInput
+    store_id: FilterTypeInput
+    created_at: FilterTypeInput
+    updated_at: FilterTypeInput
+    expired_at: FilterTypeInput
+    is_active: FilterTypeInput
+    status: FilterTypeInput
+    remote_ip: FilterTypeInput
+    subtotal: FilterTypeInput
+    base_subtotal: FilterTypeInput
+    items_qty: FilterTypeInput
+    items_count: FilterTypeInput
+}
+input MpQuoteConversationFilterInput {
+    reply_id: FilterTypeInput
+    quote_id: FilterTypeInput
+    author_name: FilterTypeInput
+    type: FilterTypeInput
+    content: FilterTypeInput
+    created_at: FilterTypeInput
+}
+
+input MpQuoteConversationSortInput {
+    reply_id: SortEnum
+    quote_id: SortEnum
+    author_name: SortEnum
+    type: SortEnum
+    created_at: SortEnum
+}
+
+type AddSimpleProductsToQuoteOutput {
+    quote: Quote!
+}
+
+type AddVirtualProductsToQuoteOutput {
+    quote: Quote!
+}
+
+type AddConfigurableProductsToQuoteOutput {
+    quote: Quote!
+}
+
+type AddDownloadableProductsToQuoteOutput {
+    quote: Quote!
+}
+
+type AddBundleProductsToQuoteOutput {
+    quote: Quote!
+}
+
+type AddAllItemsFromCartToMpQuoteOutput {
+    cart: Cart!
+}
+
+type AddItemsBySkuToMpQuoteOuput {
+    quote: Quote!
+}
+
+type AddItemFromCartToMpQuoteOutput {
+    quote: Quote!
+}
+
+type DeleteItemFromMpQuoteOutput {
+    quote: Quote!
+}
+
+type DuplicateMpQuoteOutput {
+    quote: Quote!
+}
+
+type UpdateMpQuoteOutput {
+    quote: Quote!
+}
+
+type AddMpQuoteToCartOutput {
+    cart: Cart!
+}
+
+type GetMpQuoteOutput {
+    quote: Quote!
+}
+
+type Quote {
+    id: Int
+    entity_id: Int
+    store_id: Int
+    created_at: String
+    updated_at: String
+    expired_at: String
+    is_active: Boolean
+    is_sent_reminder: Boolean
+    status: String
+    items_count: String
+    items_qty: String
+    customer_id: Int
+    customer_group_id: Int
+    customer_email: String
+    remote_ip: String
+    base_currency_code: String
+    quote_currency_code: String
+    subtotal: Float
+    base_subtotal: Float
+    items: [QuoteItemInterface] @resolver(class: "\\Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\QuoteItems")
+}
+
+type MpQuoteListOutput {
+    items: [Quote]
+    page_info: SearchResultPageInfo
+    total_count: Int
+}
+
+type mpQuoteConversationOutput {
+    items: [MpQuoteConversation]
+    page_info: SearchResultPageInfo
+    total_count: Int
+}
+
+type MpQuoteConversation {
+    reply_id: Int
+    quote_id: Int
+    is_customer_notified: Int
+    author_name: String
+    type: Int
+    content: String
+    files: String
+    created_at: String
+}
+
+interface QuoteItemInterface @typeResolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\QuoteItemTypeResolver") {
+    id: String!
+    qty: Float!
+    sku: String
+    name: String
+    price: Float
+    quote_id: Int
+    calculation_price: String
+    request_price: String
+    prices: CartItemPrices @resolver(class: "\\Magento\\QuoteGraphQl\\Model\\Resolver\\CartItemPrices")
+    product: ProductInterface!
+}
+
+type SimpleQuoteItem implements QuoteItemInterface @doc(description: "Simple Cart Item") {
+    customizable_options: [SelectedCustomizableOption] @resolver(class: "Magento\\QuoteGraphQl\\Model\\Resolver\\CustomizableOptions")
+}
+
+type VirtualQuoteItem implements QuoteItemInterface @doc(description: "Virtual Cart Item") {
+    customizable_options: [SelectedCustomizableOption] @resolver(class: "Magento\\QuoteGraphQl\\Model\\Resolver\\CustomizableOptions")
+}
+type ConfigurableQuoteItem implements QuoteItemInterface {
+    customizable_options: [SelectedCustomizableOption]!
+    configurable_options: [SelectedConfigurableOption!]! @resolver(class: "Magento\\ConfigurableProductGraphQl\\Model\\Resolver\\ConfigurableCartItemOptions")
+}
+
+type DownloadableQuoteItem implements QuoteItemInterface @doc(description: "Downloadable Cart Item") {
+    customizable_options: [SelectedCustomizableOption] @resolver(class: "Magento\\QuoteGraphQl\\Model\\Resolver\\CustomizableOptions")
+    links: [DownloadableProductLinks] @resolver(class: "Magento\\DownloadableGraphQl\\Resolver\\DownloadableCartItem\\Links") @doc(description: "An array containing information about the links for the added to cart downloadable product")
+    samples: [DownloadableProductSamples] @resolver(class: "Magento\\DownloadableGraphQl\\Resolver\\DownloadableCartItem\\Samples") @doc(description: "DownloadableProductSamples defines characteristics of a downloadable product")
+}
+
+type BundleQuoteItem implements QuoteItemInterface {
+    customizable_options: [SelectedCustomizableOption]! @resolver(class: "Magento\\QuoteGraphQl\\Model\\Resolver\\CustomizableOptions")
+    bundle_options: [SelectedBundleOption!]! @resolver(class: "Magento\\BundleGraphQl\\Model\\Resolver\\BundleOption")
+}
