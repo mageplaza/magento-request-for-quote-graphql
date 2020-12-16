@@ -221,7 +221,7 @@ interface QuoteItemInterface @typeResolver(class: "Mageplaza\\RequestForQuoteGra
     quote_id: Int
     calculation_price: String
     request_price: String
-    prices: CartItemPrices @resolver(class: "\\Magento\\QuoteGraphQl\\Model\\Resolver\\CartItemPrices")
+    prices: CartItemPrices @resolver(class: "\\Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\QuoteItemPrices")
     product: ProductInterface!
 }
 
