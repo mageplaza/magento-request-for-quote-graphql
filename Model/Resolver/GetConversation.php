@@ -31,7 +31,6 @@ use Magento\Framework\GraphQl\Query\Resolver\Argument\SearchCriteria\Builder as 
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\GraphQl\Model\Query\ContextInterface;
-use Mageplaza\RequestForQuote\Model\Api\QuoteRepository;
 use Mageplaza\RequestForQuote\Model\Api\ReplyRepository;
 
 /**
@@ -40,12 +39,6 @@ use Mageplaza\RequestForQuote\Model\Api\ReplyRepository;
  */
 class GetConversation implements ResolverInterface
 {
-
-    /**
-     * @var QuoteRepository
-     */
-    private $quoteRepository;
-
     /**
      * @var SearchCriteriaBuilder
      */
@@ -57,18 +50,16 @@ class GetConversation implements ResolverInterface
     private $replyRepository;
 
     /**
-     * GetList constructor.
+     * GetConversation constructor.
      *
-     * @param QuoteRepository $quoteRepository
+     * @param ReplyRepository $replyRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      */
     public function __construct(
-        QuoteRepository $quoteRepository,
         ReplyRepository $replyRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder
     ) {
-        $this->quoteRepository       = $quoteRepository;
-        $this->replyRepository = $replyRepository;
+        $this->replyRepository       = $replyRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 

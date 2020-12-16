@@ -87,7 +87,7 @@ class AddItemFromCart implements ResolverInterface
         try {
             $cart = $this->cartManagement->getCartForCustomer($currentUserId);
         } catch (NoSuchEntityException $e) {
-            $this->createEmptyCartForCustomer->execute($currentUserId, null);
+            $this->createEmptyCartForCustomer->execute($currentUserId);
             $cart = $this->cartManagement->getCartForCustomer($currentUserId);
         }
 

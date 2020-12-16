@@ -25,7 +25,6 @@ declare(strict_types=1);
 namespace Mageplaza\RequestForQuoteGraphQl\Model\Resolver;
 
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\Resolver\TypeResolverInterface;
 
 /**
@@ -49,7 +48,7 @@ class QuoteItemTypeResolver implements TypeResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolveType(array $data) : string
+    public function resolveType(array $data): string
     {
         if (!isset($data['product'])) {
             throw new LocalizedException(__('Missing key "product" in cart data'));
@@ -66,6 +65,7 @@ class QuoteItemTypeResolver implements TypeResolverInterface
                 __('Product "%product_type" type is not supported', ['product_type' => $productTypeId])
             );
         }
+
         return $this->supportedTypes[$productTypeId];
     }
 }

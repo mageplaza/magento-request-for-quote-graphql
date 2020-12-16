@@ -28,9 +28,11 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Cart\Totals;
+use Magento\Quote\Model\Quote\TotalsCollector;
+use Magento\SalesRule\Api\Data\DiscountDataInterface;
+use Mageplaza\RequestForQuote\Model\CartQuote;
 use Mageplaza\RequestForQuote\Model\Quote;
 use Mageplaza\RequestForQuote\Model\Quote\Item;
-use Magento\Quote\Model\Quote\TotalsCollector;
 
 /**
  * @inheritdoc
@@ -48,18 +50,18 @@ class QuoteItemPrices implements ResolverInterface
     private $totals;
 
     /**
-     * @var \Mageplaza\RequestForQuote\Model\CartQuote
+     * @var CartQuote
      */
     private $cartQuote;
 
     /**
-     * @param TotalsCollector $totalsCollector
+     * QuoteItemPrices constructor.
+     *
+     * @param CartQuote $cartQuote
      */
     public function __construct(
-        TotalsCollector $totalsCollector,
-        \Mageplaza\RequestForQuote\Model\CartQuote $cartQuote
+        CartQuote $cartQuote
     ) {
-        $this->totalsCollector = $totalsCollector;
         $this->cartQuote = $cartQuote;
     }
 
@@ -86,23 +88,23 @@ class QuoteItemPrices implements ResolverInterface
         $currencyCode = $quoteItem->getQuote()->getQuoteCurrencyCode();
 
         return [
-            'price' => [
+            'price'                   => [
                 'currency' => $currencyCode,
-                'value' => $quoteItem->getPrice(),
+                'value'    => $quoteItem->getPrice(),
             ],
-            'row_total' => [
+            'row_total'               => [
                 'currency' => $currencyCode,
-                'value' => $quoteItem->getRowTotal(),
+                'value'    => $quoteItem->getRowTotal(),
             ],
             'row_total_including_tax' => [
                 'currency' => $currencyCode,
-                'value' => $quoteItem->getRowTotalInclTax(),
+                'value'    => $quoteItem->getRowTotalInclTax(),
             ],
-            'total_item_discount' => [
+            'total_item_discount'     => [
                 'currency' => $currencyCode,
-                'value' => $quoteItem->getDiscountAmount(),
+                'value'    => $quoteItem->getDiscountAmount(),
             ],
-            'discounts' => $this->getDiscountValues($quoteItem, $currencyCode)
+            'discounts'               => $this->getDiscountValues($quoteItem, $currencyCode)
         ];
     }
 
@@ -111,27 +113,30 @@ class QuoteItemPrices implements ResolverInterface
      *
      * @param Item $cartItem
      * @param string $currencyCode
+     *
      * @return array
      */
     private function getDiscountValues($cartItem, $currencyCode)
     {
         $itemDiscounts = $cartItem->getExtensionAttributes()->getDiscounts();
         if ($itemDiscounts) {
-            $discountValues=[];
+            $discountValues = [];
             foreach ($itemDiscounts as $value) {
                 $discount = [];
-                $amount = [];
-                /* @var \Magento\SalesRule\Api\Data\DiscountDataInterface $discountData */
-                $discountData = $value->getDiscountData();
-                $discountAmount = $discountData->getAmount();
-                $discount['label'] = $value->getRuleLabel() ?: __('Discount');
-                $amount['value'] = $discountAmount;
+                $amount   = [];
+                /* @var DiscountDataInterface $discountData */
+                $discountData       = $value->getDiscountData();
+                $discountAmount     = $discountData->getAmount();
+                $discount['label']  = $value->getRuleLabel() ?: __('Discount');
+                $amount['value']    = $discountAmount;
                 $amount['currency'] = $currencyCode;
                 $discount['amount'] = $amount;
-                $discountValues[] = $discount;
+                $discountValues[]   = $discount;
             }
+
             return $discountValues;
         }
+
         return null;
     }
 }
