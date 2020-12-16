@@ -30,6 +30,7 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\GraphQl\Model\Query\ContextInterface;
 use Mageplaza\RequestForQuote\Model\Api\QuoteRepository;
+use Mageplaza\RequestForQuote\Model\CartQuote;
 use Mageplaza\RequestForQuoteGraphQl\Model\Quote\AddProductsToQuote;
 use Magento\Framework\Exception\AuthorizationException;
 
@@ -56,6 +57,11 @@ class AddSimpleProductsToQuote implements ResolverInterface
     private $quoteRepository;
 
     /**
+     * @var CartQuote
+     */
+    private $cartQuote;
+
+    /**
      * AddSimpleProductsToQuote constructor.
      *
      * @param AddProductsToQuote $addProductsToQuote
@@ -65,11 +71,13 @@ class AddSimpleProductsToQuote implements ResolverInterface
     public function __construct(
         AddProductsToQuote $addProductsToQuote,
         GetCustomer $getCustomer,
-        QuoteRepository $quoteRepository
+        QuoteRepository $quoteRepository,
+        CartQuote $cartQuote
     ) {
         $this->addProductsToQuote = $addProductsToQuote;
         $this->getCustomer        = $getCustomer;
         $this->quoteRepository    = $quoteRepository;
+        $this->cartQuote = $cartQuote;
     }
 
     /**
@@ -92,6 +100,7 @@ class AddSimpleProductsToQuote implements ResolverInterface
         $customerId = $customer->getId();
         $this->addProductsToQuote->execute($customerId, $cartItems);
         $quote = $this->quoteRepository->getInactiveQuoteCart($customerId);
+        $this->cartQuote->collectQuoteById($quote->getId());
 
         return [
             'quote' => array_merge($quote->getData(), [
