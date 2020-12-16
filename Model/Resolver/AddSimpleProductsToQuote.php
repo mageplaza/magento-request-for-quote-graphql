@@ -67,6 +67,7 @@ class AddSimpleProductsToQuote implements ResolverInterface
      * @param AddProductsToQuote $addProductsToQuote
      * @param GetCustomer $getCustomer
      * @param QuoteRepository $quoteRepository
+     * @param CartQuote $cartQuote
      */
     public function __construct(
         AddProductsToQuote $addProductsToQuote,
@@ -101,6 +102,7 @@ class AddSimpleProductsToQuote implements ResolverInterface
         $this->addProductsToQuote->execute($customerId, $cartItems);
         $quote = $this->quoteRepository->getInactiveQuoteCart($customerId);
         $this->cartQuote->collectQuoteById($quote->getId());
+        $quote->load($quote->getId());
 
         return [
             'quote' => array_merge($quote->getData(), [
