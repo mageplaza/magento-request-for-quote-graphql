@@ -84,11 +84,10 @@ class Update implements ResolverInterface
         try {
 
             $this->quoteRepository->update($currentUserId, $items, $quoteId);
+            $quote = $this->quoteRepository->get($currentUserId, $quoteId);
         } catch (Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));
         }
-
-        $quote = $this->quoteRepository->getInactiveQuoteCart($currentUserId);
 
         return [
             'quote' => array_merge($quote->getData(), [
