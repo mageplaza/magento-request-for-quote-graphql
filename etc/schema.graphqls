@@ -39,7 +39,7 @@ type Mutation {
     addDownloadableProductsToMpQuote(input: AddDownloadableProductsToQuoteInput): AddDownloadableProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
     addBundleProductsToMpQuote(input: AddBundleProductsToQuoteInput): AddBundleProductsToQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddSimpleProductsToQuote")
     addAllItemsFromCartToMpQuote: AddAllItemsFromCartToMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddAllItemsFromCart")
-    addItemsBySkuToMpQuote(input: AddItemsBySkuToMpQuoteInput): AddItemsBySkuToMpQuoteOuput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddItemsBySku")
+    addItemsBySkuToMpQuote(input: AddItemsBySkuToMpQuoteInput): AddItemsBySkuToMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddItemsBySku")
     addItemFromCartToMpQuote(cart_item_id: String!): AddItemFromCartToMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddItemFromCart")
     cancelMpQuote(quote_id: Int!): Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\Cancel")
     deleteSubmittedMpQuote(quote_id: Int!): Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\DeleteSubmittedQuote")
@@ -153,7 +153,7 @@ type AddAllItemsFromCartToMpQuoteOutput {
     quote: Quote!
 }
 
-type AddItemsBySkuToMpQuoteOuput {
+type AddItemsBySkuToMpQuoteOutput {
     quote: Quote!
 }
 

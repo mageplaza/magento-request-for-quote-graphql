@@ -49,19 +49,31 @@ class QuoteItems implements ResolverInterface
             /**
              * @var QuoteItem $cartItem
              */
-            $productData = $cartItem->getProduct()->getData();
+            $productData          = $cartItem->getProduct()->getData();
             $productData['model'] = $cartItem->getProduct();
 
-            $itemsData[] = array_merge(
+            $itemsData[] = $this->mergeData(
                 $cartItem->getData(),
                 [
-                    'id' => $cartItem->getItemId(),
+                    'id'       => $cartItem->getItemId(),
                     'quantity' => $cartItem->getQty(),
-                    'product' => $productData,
-                    'model' => $cartItem,
+                    'product'  => $productData,
+                    'model'    => $cartItem,
                 ]
             );
         }
+
         return $itemsData;
+    }
+
+    /**
+     * @param array $array1
+     * @param $array2
+     *
+     * @return array
+     */
+    protected function mergeData($array1, $array2)
+    {
+        return array_merge($array1, $array2);
     }
 }

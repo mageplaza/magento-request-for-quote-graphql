@@ -28,7 +28,6 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Cart\Totals;
-use Magento\Quote\Model\Quote\TotalsCollector;
 use Magento\SalesRule\Api\Data\DiscountDataInterface;
 use Mageplaza\RequestForQuote\Model\CartQuote;
 use Mageplaza\RequestForQuote\Model\Quote;
@@ -39,11 +38,6 @@ use Mageplaza\RequestForQuote\Model\Quote\Item;
  */
 class QuoteItemPrices implements ResolverInterface
 {
-    /**
-     * @var TotalsCollector
-     */
-    private $totalsCollector;
-
     /**
      * @var Totals
      */

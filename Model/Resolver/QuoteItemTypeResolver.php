@@ -35,7 +35,7 @@ class QuoteItemTypeResolver implements TypeResolverInterface
     /**
      * @var array
      */
-    private $supportedTypes = [];
+    private $supportedTypes;
 
     /**
      * @param array $supportedTypes
