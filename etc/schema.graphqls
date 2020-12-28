@@ -48,6 +48,11 @@ type Mutation {
     updateMpQuote(input: updateMpQuoteInput!): UpdateMpQuoteOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\Update")
     deleteCurrentMpQuote: Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\DeleteCurrentQuote")
     addMpQuoteToCart(quote_id: Int!): AddMpQuoteToCartOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\AddToCart")
+    saveMpQuoteReply(
+        quote_id: Int,
+        content: String,
+        files: [MpQuoteReplyFileInput]
+    ): Boolean @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\SaveReply")
 }
 
 input AddSimpleProductsToQuoteInput {
@@ -113,6 +118,15 @@ input MpQuoteConversationSortInput {
     author_name: SortEnum
     type: SortEnum
     created_at: SortEnum
+}
+
+input MpQuoteReplyFileInput {
+    file_id: String
+    file: String
+    location: String
+    name: String
+    size: String
+    type: String
 }
 
 type AddSimpleProductsToQuoteOutput {
