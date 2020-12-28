@@ -34,6 +34,7 @@ use Magento\Quote\Api\CartManagementInterface;
 use Magento\QuoteGraphQl\Model\Cart\CreateEmptyCartForCustomer;
 use Mageplaza\RequestForQuote\Model\Api\QuoteRepository;
 use Magento\Framework\Exception\AuthorizationException;
+use Mageplaza\RequestForQuote\Model\CartQuote;
 
 /**
  * Class AddItemsBySku
@@ -57,20 +58,28 @@ class AddItemsBySku implements ResolverInterface
     private $quoteRepository;
 
     /**
+     * @var CartQuote
+     */
+    private $cartQuote;
+
+    /**
      * AddItemsBySku constructor.
      *
      * @param CreateEmptyCartForCustomer $createEmptyCartForCustomer
      * @param CartManagementInterface $cartManagement
      * @param QuoteRepository $quoteRepository
+     * @param CartQuote $cartQuote
      */
     public function __construct(
         CreateEmptyCartForCustomer $createEmptyCartForCustomer,
         CartManagementInterface $cartManagement,
-        QuoteRepository $quoteRepository
+        QuoteRepository $quoteRepository,
+        CartQuote $cartQuote
     ) {
         $this->createEmptyCartForCustomer = $createEmptyCartForCustomer;
         $this->cartManagement             = $cartManagement;
         $this->quoteRepository            = $quoteRepository;
+        $this->cartQuote = $cartQuote;
     }
 
     /**
@@ -97,6 +106,8 @@ class AddItemsBySku implements ResolverInterface
         try {
             $this->quoteRepository->addItemsBySku($currentUserId, $cart->getId(), $skus, $qty);
             $quote = $this->quoteRepository->getInactiveQuoteCart($currentUserId);
+            $this->cartQuote->collectQuoteById($quote->getId());
+            $quote->load($quote->getId());
         } catch (Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));
         }
