@@ -38,6 +38,9 @@
                 <item name="quotes" xsi:type="object">
                     Mageplaza\RequestForQuoteGraphQl\Model\Resolver\FilterArgument
                 </item>
+                <item name="conversation" xsi:type="object">
+                    Mageplaza\RequestForQuoteGraphQl\Model\Resolver\FilterArgument
+                </item>
             </argument>
         </arguments>
     </type>
