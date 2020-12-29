@@ -59,9 +59,7 @@ class GetConfig implements ResolverInterface
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
         try {
-            return [
-                'quote' => $this->quoteRepository->getConfig()
-            ];
+            return $this->quoteRepository->getConfig();
         } catch (Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));
         }
