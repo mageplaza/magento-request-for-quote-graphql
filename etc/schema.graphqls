@@ -30,6 +30,7 @@ type Query {
         pageSize: Int = 20
         currentPage: Int = 1
     ): mpQuoteConversationOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\GetConversation")
+    mpQuoteConfig: mpQuoteConfigOutput @resolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\GetConfig")
 }
 
 type Mutation {
@@ -224,6 +225,17 @@ type MpQuoteConversation {
     content: String
     files: String
     created_at: String
+}
+
+type mpQuoteConfigOutput {
+    icon_url: String
+    allow_category: String
+    category: String
+    customer_groups: String
+    is_allow_guest: Boolean
+    is_allow_attach: Boolean
+    file_type: String
+    redirect_page: String
 }
 
 interface QuoteItemInterface @typeResolver(class: "Mageplaza\\RequestForQuoteGraphQl\\Model\\Resolver\\QuoteItemTypeResolver") {
