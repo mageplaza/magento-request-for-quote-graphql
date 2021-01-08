@@ -1,4 +1,4 @@
-# Magento Request a Quote GraphQl
+# Magento Request a Quote GraphQL
 
 **Magento 2 Request For Quote GraphQL is now a part of the Mageplaza Request For Quote extension that adds GraphQL features. This supports PWA Studio.** 
 
